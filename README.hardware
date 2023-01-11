@@ -17,10 +17,12 @@ This BSP supports the following boards:
 	+ Intel Ice Lake-SP: 3rd Gen Intel(R) Xeon(R) Scalable processor
 	+ Intel Snow Ridge: Intel Atom(R) P5362 processor
 	+ Intel Elkhart Lake: Intel Atom(R) x6425RE Processor
+	+ Intel Sapphire Rapids: Intel(R) Xeon(R) Platinum 8468H
 
 2. Change History
 =================
 
+	- 2023/01 (LINUXPG-1231) Add Sapphire Rapids support
 	- 2021/07 (LINUXPG-828) (LINUXPG-654) Add Elkhart Lake support
 	- 2021/05 (LINUXPG-658) Add Snow Ridge NS support
 	- 2021/04 (LINUXPG-656) Add Ice Lake-SP support
@@ -550,3 +552,99 @@ Not all of them are visible to host. It depends on the settings in BIOS and whet
 by host or PSE (Programmable Service Engine). Thus, the serial port index is not fixed.
 
 The micro-USB to serial debug port on CRB we used is dw-apb-uart.6 at MMIO 0x4010006000.
+
+3.6 Intel Sapphire Rapids
+-------------------------
+Sapphire Rapids is the codename for Intel 4th Gen Xeon Scalable Processor, and it is a part of
+the Eagle Stream server platform.
+
+3.6.1 Validated Board Info
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+This BSP is only validated in the following environment. If you use this BSP
+in a different environment it may have some issues.
+
+[BIOS Info]
+	Vendor: Intel Corporation
+	Version: EGSDCRB1.SYS.0079.D34.2205030421
+	Release Date: 05/03/2022
+
+[Processor Info]
+	Model name:          Intel(R) Xeon(R) Platinum 8468H
+	CPU family:          6
+	Model:               143
+	Thread(s) per core:  2
+	Core(s) per socket:  48
+	Socket(s):           2
+	Stepping:            6
+
+[Board Info]
+	Intel Archer City Modular
+
+3.6.2 Supported Features
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+	o Bus
+		+ SMBus:
+			+ SMBus [0c05]: Intel Corporation Device [8086:1bc9] (rev 11)
+		+ PCI-Express
+
+	o Network
+		+ Intel Gigabit Ethernet:
+			+ Ethernet controller [0200]: Intel Corporation I210 Gigabit Network Connection [8086:1533] (rev 03)
+
+	o USB
+		+ USB 3.0 XHCI controller:
+			+ USB controller [0c03]: Intel Corporation Device [8086:1bcd] (rev 11)
+
+	o Storage
+		+ SATA:
+			+ SATA controller [0106]: Intel Corporation Device [8086:1ba2] (rev 11)
+
+	o Multimedia
+		+ Graphics:
+			+ VGA compatible controller [0300]: ASPEED Technology, Inc. ASPEED Graphics Family [1a03:2000] (rev 52)
+
+	o Power Management
+		+ Suspend to IDLE: ACPI S0
+		+ Suspend to DISK: ACPI S4
+		+ CPU Freq: ACPI P-state
+		+ CPU Idle: ACPI C-state
+
+	o Misc Devices
+		+ Input device:
+			+ USB mouse & keyboard
+		+ UART
+
+	o TPM2.0
+		+ IFX0785:00: 2.0 TPM (device-id 0x1B, rev-id 22)
+
+	o Intel Data Streaming Accelerators
+		+ System peripheral [0880]: Intel Corporation Device 0b25
+		+ System peripheral [0880]: Intel Corporation Device 0cfe
+
+	o Intel QuickAssist Technology (QAT)
+		+ Co-processor [0b40]: Intel Corporation Device [8086:4940] (rev 40)
+
+	o Intel Software Guard Extensions
+
+3.6.3 Unsupported Feature
+~~~~~~~~~~~~~~~~~~~~~~~~~
+The following feature is not supported or validated.
+
+	x Audio device [0403]: Intel Corporation Device [8086:1bc8]
+
+There is no external interface for audio device on server platform. So this feature
+is not validated.
+
+3.6.4 Notes
+~~~~~~~~~~~
+1) In order to support QAT device on Sapphire Rapids, you need to install qat20 not qat17.
+So don't include feature/intel-qat, which only supports qat17.
+
+QAT20 package is not public available yet, please contact Intel for the package.
+
+To build and install QAT20 on target, you need to include feature/intel-x86-dev to install
+dependent packages.
+
+2) To support Intel SGX, you need to include feature/intel-sgx and read
+templates/feature/intel-sgx/README first.
