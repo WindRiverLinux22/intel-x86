@@ -627,6 +627,8 @@ in a different environment it may have some issues.
 
 	o Intel Software Guard Extensions
 
+	o Intel Optane Persistent Memory 300 series (Crow Pass)
+
 3.6.3 Unsupported Feature
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 The following feature is not supported or validated.
